@@ -1,13 +1,7 @@
 
-FROM mhart/alpine-node:12
-FROM alpine:3.9
+FROM node:12-slim
 # Change working directory
 WORKDIR "/app"
-# Update packages and install dependency packages for services
-RUN apt-get update \
- && apt-get dist-upgrade -y \
- && apt-get clean \
- && echo 'Finished installing dependencies'
 # Copy package.json and package-lock.json
 COPY package*.json ./
 # Install npm production packages 
@@ -16,10 +10,6 @@ RUN npm install --production
 
 FROM node:12-slim
 WORKDIR "/app"
-RUN apt-get update \
- && apt-get dist-upgrade -y \
- && apt-get clean \
- && echo 'Finished installing dependencies'
 
 COPY --from=0 /app/node_modules /app/node_modules
 COPY . /app
